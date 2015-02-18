@@ -24,12 +24,30 @@
 import random, os.path
 import pygame
 from pygame.locals import *
+import pygame.gfxdraw
+
 
 #see if we can load more than standard BMP
 if not pygame.image.get_extended():
     raise SystemExit("Sorry, extended image module required")
 
-SCREENRECT     = Rect(0, 0, 640, 480)
+SCREENRECT = Rect(0, 0, 640, 480)
+#main_dir = os.path.split(os.path.abspath(__file__))[0]
+
+def load_image(file):
+    "loads an image, prepares it for play"
+    file = os.path.join(main_dir, 'data', file)
+    try:
+        surface = pygame.image.load(file)
+    except pygame.error:
+        raise SystemExit('Could not load image "%s" %s'%(file, pygame.get_error()))
+    return surface.convert()
+
+def load_images(*files):
+    imgs = []
+    for file in files:
+        imgs.append(load_image(file))
+    return imgs
 
 def main():
     pygame.init()
@@ -37,8 +55,7 @@ def main():
     winstyle = 0  # |FULLSCREEN
     bestdepth = pygame.display.mode_ok(SCREENRECT.size, winstyle, 32)
     screen = pygame.display.set_mode(SCREENRECT.size, winstyle, bestdepth)
-    #draw the scene
-    dirty = all.draw(screen)
-    pygame.display.update(dirty)
+    pygame.time.wait(2000)
+    pygame.quit()
 
 if __name__ == '__main__': main()
