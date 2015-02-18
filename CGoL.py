@@ -28,7 +28,7 @@ main_dir = os.path.split(os.path.abspath(__file__))[0]
 
 
 def draw_grid():
-    Grid = [[0 for i in range(dimx)] for j in range(dimy)]
+    Grid = [[0 for j in range(dimy)] for i in range(dimx)]
     for i in range(dimx):
         for j in range(dimy):
             if Grid[i][j] == 0: #  Works with "i" going from 0 to 47; 48-64 is "out of order". No idea. 
