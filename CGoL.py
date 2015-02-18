@@ -28,10 +28,12 @@ main_dir = os.path.split(os.path.abspath(__file__))[0]
 
 
 def draw_grid():
+    Grid = [[0 for i in range(dimx)] for j in range(dimy)]
     for i in range(dimx):
         for j in range(dimy):
-            square = pygame.Rect(10*i, 10*j, 10, 10)
-            screen.blit(load_image("Borders.png"), square)
+            if Grid[i][j] == 0: #  Works with "i" going from 0 to 47; 48-64 is "out of order". No idea. 
+                square = pygame.Rect(10*i, 10*j, 10, 10)
+                screen.blit(load_image("Borders.png"), square)
 
 def load_image(file):
     "loads an image, prepares it for play"
