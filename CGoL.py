@@ -14,11 +14,19 @@ dimy = 48
 # Set the display mode
 SCREENRECT = Rect(0, 0, (10*dimx), (10*dimy))
 
-#class Alive:
-    
+def update(Grid):
+    for i in range(1, dimx-1):
+        for j in range(1, dimy-1):
+            updatexy(Grid, i, j)
 
-#class Dead:
-    
+def updatexy(Grid, x, y):
+    s = Grid[x+1][y] + Grid[x+1][y+1] + Grid[x][y+1] + Grid[x-1][y+1] + Grid[x-1][y] + Grid[x-1][y-1] + Grid[x][y-1] + Grid[x+1][y-1]
+    if s <= 1:
+        Grid[x][y] = 0
+    elif s >= 4:
+        Grid[x][y] = 0
+    elif s == 3:
+        Grid[x][y] = 1
 
 pygame.init()
 winstyle = 0
@@ -27,13 +35,15 @@ screen = pygame.display.set_mode(SCREENRECT.size, winstyle, bestdepth)
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 
 
-def draw_grid():
-    Grid = [[0 for j in range(dimy)] for i in range(dimx)]
+def draw_grid(Grid):
     for i in range(dimx):
         for j in range(dimy):
-            if Grid[i][j] == 0: #  Works with "i" going from 0 to 47; 48-64 is "out of order". No idea. 
+            if Grid[i][j] == 0:
                 square = pygame.Rect(10*i, 10*j, 10, 10)
                 screen.blit(load_image("Borders.png"), square)
+            if Grid[i][j] == 1:
+                square = pygame.Rect(10*i, 10*j, 10, 10)
+                screen.blit(load_image("Black.png"), square)
 
 def load_image(file):
     "loads an image, prepares it for play"
@@ -51,7 +61,14 @@ def load_images(*files):
     return imgs
 
 def main():
-    draw_grid()
+    Grid = [[0 for j in range(dimy)] for i in range(dimx)]
+    Grid[20][20] = 1
+    Grid[21][20] = 1
+    Grid[22][20] = 1
+    Grid[21][21] = 1
+    draw_grid(Grid)
+    while 1:
+        update(Grid)
     try:
         while 1:
             event = pygame.event.wait()
